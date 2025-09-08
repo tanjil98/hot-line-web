@@ -1,167 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JavaScript DOM & Events Q&A</title>
-    <style>
-        /* Google Fonts for a nice, clean look */
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+1. What is the difference between getElementById, getElementsByClassName and querySelector/ querySelectorAll?
 
-        /* General Body Styles */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f4f7f9;
-            color: #333;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-        }
+Answer = The difference between them is-
+1.1- getElementById = The id is unique. so if we use the getElementById, it returns us only the matched element (Not a list). Only when we know we are targeting single element. If nothing found it returns null.
 
-        /* Main Container */
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-        }
+1.2- getElementsByClassName = The class is not unique like id, multiple elements can have the same class. So, by using the getElementsByClassName we can find multiple matched elements. It returns us a HTMLCollection (Same as array). But this HTMLCollection is live. When DOM changes something it updates automatically. Only if we need a liveCollection. If nothing found it returns an empty HTMLCollection (array like array "[]").
 
-        /* Main Heading */
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-        }
+1.3- querySelector = This is a CSS selector. By using this querySelector we can find only the first element that matches the given CSS selector. If noting found it returns null. This is static. If any changes happens to DOM it will not update. This is flexible for CSS style selector.
 
-        /* Question Styles */
-        h2 {
-            color: #3498db;
-            margin-top: 40px;
-            margin-bottom: 15px;
-        }
+1.4- querySelectorAll - This is also a CSS selector. But this returns us all elements that matches the given CSS selector. This also returns us a NodeList. Which is not liveList. If any changes happens in DOM it will remain unchanged unless we change this manually. This is flexible for CSS style selectors (.card #card div > p, [name : "User"], etc.). If nothing found it returns an empty NodeList (array like array "[]").
 
-        /* Answer Container */
-        .answer {
-            padding-left: 20px;
-            border-left: 3px solid #3498db;
-        }
 
-        /* Unordered List Styles */
-        ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
+2. How do you create and insert a new element into the DOM?
 
-        ul li {
-            background-color: #ecf0f1;
-            margin-bottom: 10px;
-            padding: 15px;
-            border-radius: 5px;
-        }
+Answer = 
+2.1- To create an element we use this method - document.createElement("div")
+in the parenthesis we need to give the element name. and then DOM will create the given element.
 
-        /* Code Styles */
-        code {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #eef2f5;
-            padding: 3px 6px;
-            border-radius: 4px;
-            color: #c0392b;
-        }
+2.2- To insert an element we use many method - (append(), appendChild(), prepend(), before(), after(), replaceWith(), etc.)
 
-        pre {
-            background-color: #2d2d2d;
-            color: #f8f8f2;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-        
-        pre code {
-            background-color: transparent;
-            color: #f8f8f2;
-            padding: 0;
-        }
+In this case we need 2 element. The element where we want to insert the created element and what element we want to insert.
 
-        /* Strong tag for emphasis */
-        strong {
-            color: #2980b9;
-        }
-    </style>
-</head>
-<body>
+Example - 
+const parent = document.getElementById("parent-div");
+const child = document.createElement("p");
+parent.appendChild(child);
 
-    <div class="container">
-        <h1>JavaScript DOM & Event Concepts</h1>
 
-        <div class="qa-item">
-            <h2>1. What is the difference between getElementById, getElementsByClassName, and querySelector/querySelectorAll?</h2>
-            <div class="answer">
-                <ul>
-                    <li><strong><code>getElementById("id")</code></strong>: Selects and returns the <strong>single element</strong> that matches the given unique ID.</li>
-                    <li><strong><code>getElementsByClassName("class")</code></strong>: Selects all elements with the given class name and returns them as a live <strong><code>HTMLCollection</code></strong>.</li>
-                    <li><strong><code>querySelector("css-selector")</code></strong>: Returns the <strong>very first element</strong> that matches the specified CSS selector.</li>
-                    <li><strong><code>querySelectorAll("css-selector")</code></strong>: Returns a static <strong><code>NodeList</code></strong> of <strong>all elements</strong> that match the specified CSS selector.</li>
-                </ul>
-            </div>
-        </div>
+3. What is Event Bubbling and how does it work?
 
-        <div class="qa-item">
-            <h2>2. How do you create and insert a new element into the DOM?</h2>
-            <div class="answer">
-                <p>You first create an element using <code>document.createElement()</code> and then insert it into the DOM, often using <code>appendChild()</code> on a parent element.</p>
-                <pre><code>// 1. Create a new 'div' element
-const div = document.createElement("div");
+Answer = Event bubbling means when an event happens on an element it first happens in the targeted element then it goes up to the root of HTML. If we have a button inside a div and we added an click event in that child button, when we click that button, it will trigger the event first on that button, then it will again trigger on the div, then divs parent, then grandparent and so on to the root.
 
-// 2. Add some content to it
-div.textContent = "Hello World!";
 
-// 3. Append it to the body of the document
-document.body.appendChild(div);</code></pre>
-            </div>
-        </div>
+4. What is Event Delegation in JavaScript? Why is it useful?
 
-        <div class="qa-item">
-            <h2>3. What is Event Bubbling and how does it work?</h2>
-            <div class="answer">
-                <p>Event bubbling is a process where an event triggered on a child element first runs on that element, and then "bubbles up" to its parent, its grandparent, and so on, up to the root of the document.</p>
-            </div>
-        </div>
+Answer = Event delegation is a technique to add event listener on the common parent element instead of multiple child elements. It uses event bubble to catch where is the event actually happened on child element. This technique is useful because it saves memory usage, cleaner code, handles dynamic elements added after the website loads.
 
-        <div class="qa-item">
-            <h2>4. What is Event Delegation in JavaScript? Why is it useful?</h2>
-            <div class="answer">
-                <p>Event delegation is a technique where you add a single event listener to a parent element to manage events for all of its children. It uses event bubbling to figure out which child the event originated from.</p>
-                <p><strong>Why it's useful:</strong> Instead of adding separate listeners to each child, one listener on the parent improves performance, uses less memory, and automatically works for new child elements added dynamically.</p>
-                <pre><code>// Get the parent element
-const list = document.getElementById("list");
 
-// Add one listener to the parent
-list.addEventListener("click", function (e) {
-  // Check if the clicked element is an 'li'
-  if (e.target.tagName === "LI") {
-    console.log("Clicked:", e.target.textContent);
-  }
-});</code></pre>
-            </div>
-        </div>
+5. What is the difference between preventDefault() and stopPropagation() methods?
 
-        <div class="qa-item">
-            <h2>5. What is the difference between preventDefault() and stopPropagation() methods?</h2>
-            <div class="answer">
-                 <ul>
-                    <li><strong><code>preventDefault()</code></strong>: Stops the browser's <strong>default action</strong> for an element. For example, it can stop a form from submitting or a link from navigating to a new page.</li>
-                    <li><strong><code>stopPropagation()</code></strong>: Stops an event from <strong>bubbling up</strong> to parent elements. The event will not trigger listeners on any ancestor elements.</li>
-                </ul>
-            </div>
-        </div>
+Answer = The difference between the preventDefault() and stopPropagation() methods is -
 
-    </div>
+5.1- preventDefault() - This method prevents the browsers default behavior (form submission, link navigation, checkbox toggle, etc.). This method does not stops event bubbling.
 
-</body>
-</html>
+5.2- stopPropagation() - This method stops an event from bubbling up to the root. This method also does not stops the default behavior of browser.
